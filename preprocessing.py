@@ -30,6 +30,8 @@ def clean_df(df):
     df = df.astype(data_type)
     return df
 
+df = clean_df(df)
+
 # stats on datas
 def print_stats(df): 
     stats_df = pd.DataFrame({
@@ -41,6 +43,6 @@ def print_stats(df):
         "nunique":df.nunique(), 
         "count_na": df.isna().sum()    
     })
-    return stats_df.head(39)
+    return stats_df
                              
 print(print_stats(df))
