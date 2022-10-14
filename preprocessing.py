@@ -59,3 +59,6 @@ def heat_map(df,figsize=(20,20)):
     
 
 #heat_map(df, figsize=(18,18))
+
+def donnees_categorielles():
+    return
