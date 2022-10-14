@@ -5,8 +5,7 @@ import numpy as np
 import os
 
 # load dataset
-input_dir = r'C:\Users\User\Documents\3A\ML\airbnb-berlin-price-prediction-ml-2223\Data'
-data_path = os.path.join(input_dir, 'train_airbnb_berlin.csv')
+data_path = "/Users/lucie/Desktop/Cours mention/IA/Projet ML/airbnb-berlin-price-prediction-ml-2223/Data/train_airbnb_berlin.csv"
 df = pd.read_csv(data_path)
 
 # clean dataset
@@ -44,4 +43,4 @@ def print_stats(df):
     })
     return stats_df.head(39)
                              
-print_stats(df)
+print(print_stats(df))
