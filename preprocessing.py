@@ -47,3 +47,6 @@ def print_stats(df):
     return stats_df
                              
 print(print_stats(df))
+
+def donnees_categorielles():
+    return
