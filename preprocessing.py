@@ -3,7 +3,9 @@ import pandas as pd
 import datetime
 import numpy as np
 import os
-#Création
+from sklearn import preprocessing
+
+
 # load dataset
 data_path = "/Users/saadchtouki/Documents/airbnb-berlin-price-prediction-ml-2223/Data/train_airbnb_berlin.csv" ##MODIFICATION DU PATH
 df = pd.read_csv(data_path)
@@ -60,3 +62,40 @@ print(print_stats(df))
 
 def donnees_categorielles():
     return
+
+# # Transform categorical features using OneHotEncoding method
+# categorical_features = ["neighbourhood", "Neighborhood_Group", "Property_Type", "Room_Type"]
+
+# def preprocess_using_OneHotEncoding(df, categorical_features = categorical_features):
+#     dict_Host_Response_Time = {'within an hour':3, 'within a few hours':2, 'within a day':1, 'a few days or more':0}
+#     df = df.replace({"Host_Response_Time": dict_Host_Response_Time})
+#     df_categorical_features = df[categorical_features]
+#     df_categorical_features = pd.get_dummies(df_categorical_features)
+#     df = pd.concat([df, df_categorical_features], axis=1)
+#     return df
+
+# df = preprocess_using_OneHotEncoding(df, categorical_features)
+# print(df.columns)
+
+# def drop_unnecessary_columns(df):
+#     to_drop = ['Property_Type', 'Room_Type', 'Property_Type_nan', 'neighbourhood', 'Neighborhood_Group']
+#     df = df.drop(to_drop, axis = 1)
+#     return df
+
+# df = drop_unnecessary_columns(df)
+# print(len(df.columns))
+
+# Transform categorical features using LabelEncoding method
+categorical_features = ["neighbourhood", "Neighborhood_Group", "Property_Type", "Room_Type"]
+
+def preprocess_using_LabelEncoding(df, categorical_features = categorical_features):
+    for feature in categorical_features:
+        le = preprocessing.LabelEncoder()
+        le.fit(df[feature])
+        feature_new_name = 'Label_Encoder_' + str(feature)
+        df[feature_new_name]= le.transform(df[feature])
+        df = df.drop(feature, axis = 1)
+    return df
+
+df = preprocess_using_LabelEncoding(df, categorical_features)
+print(df.columns)
