@@ -4,6 +4,8 @@ import datetime
 import numpy as np
 import os
 from sklearn import preprocessing
+from sklearn.impute import SimpleImputer
+
 
 
 # load dataset
@@ -63,6 +65,32 @@ print(print_stats(df))
 def donnees_categorielles():
     return
 
+# Deal with missing values
+
+def handle_missing_values(df):
+    df.dropna(subset=['Price'],how='any',inplace=True)
+    df.dropna(subset=['Listing_ID'],how='any',inplace=True)
+    df['Accomodates'] = df['Accomodates'].fillna(2)
+    df['Accuracy_Rating'] = df['Accuracy_Rating'].fillna(df['Accuracy_Rating'].mean())
+    df['Bedrooms'] = df['Bedrooms'].fillna(1)
+    df['Bathrooms'] = df['Bathrooms'].fillna(1)
+    df['Beds'] = df['Beds'].fillna(1)
+    df['Checkin_Rating'] = df['Checkin_Rating'].fillna(df['Checkin_Rating'].mean())
+    df['Cleanliness_Rating'] = df['Cleanliness_Rating'].fillna(df['Cleanliness_Rating'].mean())
+    df['Communication_Rating'] = df['Communication_Rating'].fillna(df['Communication_Rating'].mean())
+    df['Location_Rating'] = df['Location_Rating'].fillna(df['Location_Rating'].mean())
+    df['Guests_Included'] = df['Guests_Included'].fillna(1)
+    df['Min_Nights'] = df['Min_Nights'].fillna(1)
+    df['Overall_Rating'] = df['Overall_Rating'].fillna(df['Overall_Rating'].mean())
+    df['Value_Rating'] = df['Value_Rating'].fillna(df['Value_Rating'].mean())
+    df['Host_Response_Rate'] = df['Host_Response_Rate'].fillna(df['Host_Response_Rate'].mean())
+    df['Host_Response_Time'] = df['Host_Response_Time'].fillna('a few days or more')
+    df['Host_Since'] = df['Host_Since'].fillna(df['Host_Since'].value_counts().idxmax())
+    return df
+
+df = handle_missing_values(df)
+print(print_stats(df))
+print(df['Host_Since'].mode())
 # # Transform categorical features using OneHotEncoding method
 # categorical_features = ["neighbourhood", "Neighborhood_Group", "Property_Type", "Room_Type"]
 
@@ -89,6 +117,8 @@ def donnees_categorielles():
 categorical_features = ["neighbourhood", "Neighborhood_Group", "Property_Type", "Room_Type"]
 
 def preprocess_using_LabelEncoding(df, categorical_features = categorical_features):
+    dict_Host_Response_Time = {'within an hour':3, 'within a few hours':2, 'within a day':1, 'a few days or more':0}
+    df = df.replace({"Host_Response_Time": dict_Host_Response_Time})
     for feature in categorical_features:
         le = preprocessing.LabelEncoder()
         le.fit(df[feature])
@@ -98,4 +128,6 @@ def preprocess_using_LabelEncoding(df, categorical_features = categorical_featur
     return df
 
 df = preprocess_using_LabelEncoding(df, categorical_features)
-print(df.columns)
+
+
+
