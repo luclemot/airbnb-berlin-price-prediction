@@ -88,15 +88,34 @@ def handle_missing_values(df):
     df['Host_Response_Rate'] = df['Host_Response_Rate'].fillna(df['Host_Response_Rate'].mean())
     df['Host_Response_Time'] = df['Host_Response_Time'].fillna('a few days or more')
     df['Host_Since'] = df['Host_Since'].fillna(df['Host_Since'].value_counts().idxmax())
+    df['Last_Review'] = df['Last_Review'].fillna(df['Last_Review'].value_counts().idxmax())
+    df['First_Review'] = df['First_Review'].fillna(df['First_Review'].value_counts().idxmax())
     return df
 
 df = handle_missing_values(df)
-print(print_stats(df))
-print(df['Host_Since'].mode())
-# # Transform categorical features using OneHotEncoding method
+
+# Transform categorical features 
+ 
+def preprocessing_categorical_features(df):
+    dict_Host_Response_Time = {'within an hour':3, 'within a few hours':2, 'within a day':1, 'a few days or more':0}
+    df = df.replace({"Host_Response_Time": dict_Host_Response_Time})
+    # preprocess date
+    df['date_ref'] = pd.to_datetime('2020-01-01')
+    dates_to_preprocess = ['Last_Review', 'First_Review', 'Host_Since']
+    for date_to_preprocess in dates_to_preprocess:
+        new_name = 'Relative_' + str(date_to_preprocess)
+        df[new_name] = (df['date_ref'] - df[date_to_preprocess])/ np.timedelta64(1, 'M')
+        df = df.drop(date_to_preprocess, axis = 1)
+    df.drop('date_ref', axis = 1)
+    return df
+
+df = preprocessing_categorical_features(df)
+print(df)
+
+# Transform categorical features using OneHotEncoding method
 # categorical_features = ["neighbourhood", "Neighborhood_Group", "Property_Type", "Room_Type"]
 
-# def preprocess_using_OneHotEncoding(df, categorical_features = categorical_features):
+# def preprocessing_using_OneHotEncoding(df, categorical_features = categorical_features):
 #     dict_Host_Response_Time = {'within an hour':3, 'within a few hours':2, 'within a day':1, 'a few days or more':0}
 #     df = df.replace({"Host_Response_Time": dict_Host_Response_Time})
 #     df_categorical_features = df[categorical_features]
@@ -104,7 +123,7 @@ print(df['Host_Since'].mode())
 #     df = pd.concat([df, df_categorical_features], axis=1)
 #     return df
 
-# df = preprocess_using_OneHotEncoding(df, categorical_features)
+# df = preprocessing_using_OneHotEncoding(df, categorical_features)
 # print(df.columns)
 
 # def drop_unnecessary_columns(df):
@@ -118,7 +137,7 @@ print(df['Host_Since'].mode())
 # Transform categorical features using LabelEncoding method
 categorical_features = ["neighbourhood", "Neighborhood_Group", "Property_Type", "Room_Type"]
 
-def preprocess_using_LabelEncoding(df, categorical_features = categorical_features):
+def preprocessing_using_LabelEncoding(df, categorical_features = categorical_features):
     dict_Host_Response_Time = {'within an hour':3, 'within a few hours':2, 'within a day':1, 'a few days or more':0}
     df = df.replace({"Host_Response_Time": dict_Host_Response_Time})
     for feature in categorical_features:
@@ -129,7 +148,7 @@ def preprocess_using_LabelEncoding(df, categorical_features = categorical_featur
         df = df.drop(feature, axis = 1)
     return df
 
-df = preprocess_using_LabelEncoding(df, categorical_features)
+df = preprocessing_using_LabelEncoding(df, categorical_features)
 
 
 
