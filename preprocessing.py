@@ -7,7 +7,6 @@ from sklearn import preprocessing
 from sklearn.impute import SimpleImputer
 
 
-#Création
 # load dataset
 input_dir = os.path.join(os.getcwd(), "Data")
 data_path = os.path.join(input_dir, 'train_airbnb_berlin.csv')
@@ -115,6 +114,3 @@ def drop_unnecessary_columns(df):
 #     return df
 
 # df = preprocessing_using_LabelEncoding(df, categorical_features)
-
-
-                             
