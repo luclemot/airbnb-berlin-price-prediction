@@ -116,8 +116,6 @@ print(df)
 # categorical_features = ["neighbourhood", "Neighborhood_Group", "Property_Type", "Room_Type"]
 
 # def preprocessing_using_OneHotEncoding(df, categorical_features = categorical_features):
-#     dict_Host_Response_Time = {'within an hour':3, 'within a few hours':2, 'within a day':1, 'a few days or more':0}
-#     df = df.replace({"Host_Response_Time": dict_Host_Response_Time})
 #     df_categorical_features = df[categorical_features]
 #     df_categorical_features = pd.get_dummies(df_categorical_features)
 #     df = pd.concat([df, df_categorical_features], axis=1)
@@ -138,8 +136,6 @@ print(df)
 categorical_features = ["neighbourhood", "Neighborhood_Group", "Property_Type", "Room_Type"]
 
 def preprocessing_using_LabelEncoding(df, categorical_features = categorical_features):
-    dict_Host_Response_Time = {'within an hour':3, 'within a few hours':2, 'within a day':1, 'a few days or more':0}
-    df = df.replace({"Host_Response_Time": dict_Host_Response_Time})
     for feature in categorical_features:
         le = preprocessing.LabelEncoder()
         le.fit(df[feature])
