@@ -75,7 +75,7 @@ def preprocessing_categorical_features(df):
         new_name = 'Relative_' + str(date_to_preprocess)
         df[new_name] = (df['date_ref'] - df[date_to_preprocess])/ np.timedelta64(1, 'M')
         df = df.drop(date_to_preprocess, axis = 1)
-    df.drop('date_ref', axis = 1)
+    df = df.drop('date_ref', axis = 1)
     return df
 
 df = preprocessing_categorical_features(df)
