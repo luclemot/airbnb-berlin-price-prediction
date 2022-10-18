@@ -49,9 +49,8 @@ def print_stats(df):
         "count_na": df.isna().sum()    
     })
     return stats_df
+                          
                              
-#print(print_stats(df))
-
 #HeatMap Correlations
 import seaborn as sns
 import matplotlib.pyplot as plt
