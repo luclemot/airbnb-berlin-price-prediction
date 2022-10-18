@@ -5,11 +5,8 @@ import numpy as np
 import os
 from sklearn import preprocessing
 from sklearn.impute import SimpleImputer
-import seaborn as sns
-import matplotlib.pyplot as plt
 
 
-=======
 #Création
 # load dataset
 data_path = "/Users/saadchtouki/Documents/airbnb-berlin-price-prediction-ml-2223/Data/train_airbnb_berlin.csv" ##MODIFICATION DU PATH
@@ -38,19 +35,6 @@ def clean_df(df):
     return df
 
 df = clean_df(df)
-
-# stats on datas
-def print_stats(df): 
-    stats_df = pd.DataFrame({
-        "min":df.min(numeric_only = True), 
-        "max":df.max(numeric_only = True), 
-        "mean":df.mean(numeric_only = True),
-        "std":df.std(numeric_only = True),
-        "median":df.median(numeric_only = True),
-        "nunique":df.nunique(), 
-        "count_na": df.isna().sum()    
-    })
-    return stats_df
 
 # Deal with missing values
 
@@ -98,48 +82,38 @@ df = preprocessing_categorical_features(df)
 print(df)
 
 # Transform categorical features using OneHotEncoding method
-# categorical_features = ["neighbourhood", "Neighborhood_Group", "Property_Type", "Room_Type"]
-
-# def preprocessing_using_OneHotEncoding(df, categorical_features = categorical_features):
-#     df_categorical_features = df[categorical_features]
-#     df_categorical_features = pd.get_dummies(df_categorical_features)
-#     df = pd.concat([df, df_categorical_features], axis=1)
-#     return df
-
-# df = preprocessing_using_OneHotEncoding(df, categorical_features)
-# print(df.columns)
-
-# def drop_unnecessary_columns(df):
-#     to_drop = ['Property_Type', 'Room_Type', 'Property_Type_nan', 'neighbourhood', 'Neighborhood_Group']
-#     df = df.drop(to_drop, axis = 1)
-#     return df
-
-# df = drop_unnecessary_columns(df)
-# print(len(df.columns))
-
-# Transform categorical features using LabelEncoding method
 categorical_features = ["neighbourhood", "Neighborhood_Group", "Property_Type", "Room_Type"]
 
-def preprocessing_using_LabelEncoding(df, categorical_features = categorical_features):
-    for feature in categorical_features:
-        le = preprocessing.LabelEncoder()
-        le.fit(df[feature])
-        feature_new_name = 'Label_Encoder_' + str(feature)
-        df[feature_new_name]= le.transform(df[feature])
-        df = df.drop(feature, axis = 1)
+def preprocessing_using_OneHotEncoding(df, categorical_features = categorical_features):
+    df_categorical_features = df[categorical_features]
+    df_categorical_features = pd.get_dummies(df_categorical_features)
+    df = pd.concat([df, df_categorical_features], axis=1)
     return df
 
-df = preprocessing_using_LabelEncoding(df, categorical_features)
+df = preprocessing_using_OneHotEncoding(df, categorical_features)
+print(df.columns)
+
+def drop_unnecessary_columns(df):
+    to_drop = ['Property_Type', 'Room_Type', 'Property_Type_nan', 'neighbourhood', 'Neighborhood_Group']
+    df = df.drop(to_drop, axis = 1)
+    return df
+
+df = drop_unnecessary_columns(df)
+print(len(df.columns))
+
+# Transform categorical features using LabelEncoding method
+# categorical_features = ["neighbourhood", "Neighborhood_Group", "Property_Type", "Room_Type"]
+
+# def preprocessing_using_LabelEncoding(df, categorical_features = categorical_features):
+#     for feature in categorical_features:
+#         le = preprocessing.LabelEncoder()
+#         le.fit(df[feature])
+#         feature_new_name = 'Label_Encoder_' + str(feature)
+#         df[feature_new_name]= le.transform(df[feature])
+#         df = df.drop(feature, axis = 1)
+#     return df
+
+# df = preprocessing_using_LabelEncoding(df, categorical_features)
 
 
                              
-#HeatMap Correlations
-
-
-def heat_map(df,figsize=(20,20)):
-    corr = df.corr() #Matrice
-    plt.figure(figsize=figsize)
-    sns.heatmap(corr,annot=True,cmap="coolwarm")
-    
-
-#heat_map(df, figsize=(18,18))
