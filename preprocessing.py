@@ -3,7 +3,7 @@ import pandas as pd
 import datetime
 import numpy as np
 import os
-
+#Création
 # load dataset
 input_dir = os.path.join(os.getcwd(), "Data")
 data_path = os.path.join(input_dir, 'train_airbnb_berlin.csv')
@@ -47,3 +47,15 @@ def print_stats(df):
     return stats_df
                              
 #print(print_stats(df))
+
+#HeatMap Correlations
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+def heat_map(df,figsize=(20,20)):
+    corr = df.corr() #Matrice
+    plt.figure(figsize=figsize)
+    sns.heatmap(corr,annot=True,cmap="coolwarm")
+    
+
+#heat_map(df, figsize=(18,18))
