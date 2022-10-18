@@ -9,7 +9,8 @@ from sklearn.impute import SimpleImputer
 
 #Création
 # load dataset
-data_path = "/Users/lucie/Desktop/Cours mention/IA/Projet ML/airbnb-berlin-price-prediction-ml-2223/Data/train_airbnb_berlin_off.csv" ##MODIFICATION DU PATH
+input_dir = os.path.join(os.getcwd(), "Data")
+data_path = os.path.join(input_dir, 'train_airbnb_berlin.csv')
 df = pd.read_csv(data_path)
 
 # clean dataset
@@ -34,7 +35,7 @@ def clean_df(df):
     df = df.astype(data_type)
     return df
 
-df = clean_df(df)
+#df = clean_df(df)
 
 # Deal with missing values
 
@@ -61,7 +62,7 @@ def handle_missing_values(df):
     df['First_Review'] = df['First_Review'].fillna(df['First_Review'].value_counts().idxmax())
     return df
 
-df = handle_missing_values(df)
+# df = handle_missing_values(df)
 
 # Transform categorical features 
  
@@ -78,8 +79,8 @@ def preprocessing_categorical_features(df):
     df = df.drop('date_ref', axis = 1)
     return df
 
-df = preprocessing_categorical_features(df)
-print(df)
+# df = preprocessing_categorical_features(df)
+# print(df)
 
 # Transform categorical features using OneHotEncoding method
 categorical_features = ["neighbourhood", "Neighborhood_Group", "Property_Type", "Room_Type"]
@@ -90,16 +91,16 @@ def preprocessing_using_OneHotEncoding(df, categorical_features = categorical_fe
     df = pd.concat([df, df_categorical_features], axis=1)
     return df
 
-df = preprocessing_using_OneHotEncoding(df, categorical_features)
-print(df.columns)
+# df = preprocessing_using_OneHotEncoding(df, categorical_features)
+# print(df.columns)
 
 def drop_unnecessary_columns(df):
     to_drop = ['Property_Type', 'Room_Type', 'Property_Type_nan', 'neighbourhood', 'Neighborhood_Group']
     df = df.drop(to_drop, axis = 1)
     return df
 
-df = drop_unnecessary_columns(df)
-print(len(df.columns))
+# df = drop_unnecessary_columns(df)
+# print(len(df.columns))
 
 # Transform categorical features using LabelEncoding method
 # categorical_features = ["neighbourhood", "Neighborhood_Group", "Property_Type", "Room_Type"]
