@@ -75,11 +75,11 @@ def preprocessing_categorical_features(df):
         new_name = 'Relative_' + str(date_to_preprocess)
         df[new_name] = (df['date_ref'] - df[date_to_preprocess])/ np.timedelta64(1, 'M')
         df = df.drop(date_to_preprocess, axis = 1)
-    df = df.drop('date_ref', axis = 1)
+    df.drop('date_ref', axis = 1)
     return df
 
 df = preprocessing_categorical_features(df)
-#print(df)
+print(df)
 
 # Transform categorical features using OneHotEncoding method
 categorical_features = ["neighbourhood", "Neighborhood_Group", "Property_Type", "Room_Type"]
@@ -91,7 +91,7 @@ def preprocessing_using_OneHotEncoding(df, categorical_features = categorical_fe
     return df
 
 df = preprocessing_using_OneHotEncoding(df, categorical_features)
-#print(df.columns)
+print(df.columns)
 
 def drop_unnecessary_columns(df):
     to_drop = ['Property_Type', 'Room_Type', 'Property_Type_nan', 'neighbourhood', 'Neighborhood_Group']
@@ -99,7 +99,7 @@ def drop_unnecessary_columns(df):
     return df
 
 df = drop_unnecessary_columns(df)
-#print(len(df.columns))
+print(len(df.columns))
 
 # Transform categorical features using LabelEncoding method
 # categorical_features = ["neighbourhood", "Neighborhood_Group", "Property_Type", "Room_Type"]
@@ -114,3 +114,6 @@ df = drop_unnecessary_columns(df)
 #     return df
 
 # df = preprocessing_using_LabelEncoding(df, categorical_features)
+
+
+                             
