@@ -5,12 +5,14 @@ import numpy as np
 import os
 from sklearn import preprocessing
 from sklearn.impute import SimpleImputer
+import seaborn as sns
+import matplotlib.pyplot as plt
 
 
-
+=======
+#Création
 # load dataset
-input_dir = r'C:\Users\User\Documents\3A\ML\airbnb-berlin-price-prediction-ml-2223\Data'
-data_path = os.path.join(input_dir, 'train_airbnb_berlin.csv')
+data_path = "/Users/saadchtouki/Documents/airbnb-berlin-price-prediction-ml-2223/Data/train_airbnb_berlin.csv" ##MODIFICATION DU PATH
 df = pd.read_csv(data_path)
 
 # clean dataset
@@ -130,4 +132,14 @@ def preprocessing_using_LabelEncoding(df, categorical_features = categorical_fea
 df = preprocessing_using_LabelEncoding(df, categorical_features)
 
 
+                             
+#HeatMap Correlations
 
+
+def heat_map(df,figsize=(20,20)):
+    corr = df.corr() #Matrice
+    plt.figure(figsize=figsize)
+    sns.heatmap(corr,annot=True,cmap="coolwarm")
+    
+
+#heat_map(df, figsize=(18,18))
