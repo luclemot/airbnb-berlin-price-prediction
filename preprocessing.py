@@ -9,7 +9,7 @@ from sklearn.impute import SimpleImputer
 
 #Création
 # load dataset
-data_path = "/Users/saadchtouki/Documents/airbnb-berlin-price-prediction-ml-2223/Data/train_airbnb_berlin.csv" ##MODIFICATION DU PATH
+data_path = "/Users/lucie/Desktop/Cours mention/IA/Projet ML/airbnb-berlin-price-prediction-ml-2223/Data/train_airbnb_berlin_off.csv" ##MODIFICATION DU PATH
 df = pd.read_csv(data_path)
 
 # clean dataset
@@ -67,7 +67,7 @@ df = handle_missing_values(df)
  
 def preprocessing_categorical_features(df):
     dict_Host_Response_Time = {'within an hour':3, 'within a few hours':2, 'within a day':1, 'a few days or more':0}
-    df = df.replace({"Host_Response_Time": dict_Host_Response_Time})
+    df["Host_Response_Time"] = df["Host_Response_Time"].map(dict_Host_Response_Time)
     # preprocess date
     df['date_ref'] = pd.to_datetime('2020-01-01')
     dates_to_preprocess = ['Last_Review', 'First_Review', 'Host_Since']
