@@ -3,9 +3,9 @@ import pandas as pd
 import datetime
 import numpy as np
 import os
-
+#Création
 # load dataset
-data_path = "/Users/lucie/Desktop/Cours mention/IA/Projet ML/airbnb-berlin-price-prediction-ml-2223/Data/train_airbnb_berlin.csv"
+data_path = "/Users/saadchtouki/Documents/airbnb-berlin-price-prediction-ml-2223/Data/train_airbnb_berlin.csv" ##MODIFICATION DU PATH
 df = pd.read_csv(data_path)
 
 # clean dataset
@@ -45,4 +45,14 @@ def print_stats(df):
     })
     return stats_df
                              
-print(print_stats(df))
+#HeatMap Correlations
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+def heat_map(df,figsize=(20,20)):
+    corr = df.corr() #Matrice
+    plt.figure(figsize=figsize)
+    sns.heatmap(corr,annot=True,cmap="coolwarm")
+    
+
+#heat_map(df, figsize=(18,18))
