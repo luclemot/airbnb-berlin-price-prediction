@@ -114,3 +114,25 @@ def preprocessing_using_LabelEncoding(df, categorical_features = categorical_fea
     return df
 
 # df = preprocessing_using_LabelEncoding(df, categorical_features)
+
+from sklearn.experimental import enable_iterative_imputer  
+from sklearn.impute import IterativeImputer
+
+def aux_index_column(column): #Fonction auxiliaire à la multivariate imputation : Retourne l'index d'une colonne
+    numeric_columns=['Host_Response_Rate','Latitude','Longitude','Accomodates','Bathrooms','Bedrooms','Beds','Guests_Included','Min_Nights','Reviews','Overall_Rating','Accuracy_Rating','Cleanliness_Rating','Checkin_Rating','Communication_Rating','Location_Rating','Value_Rating','Price']
+    for i in range(len(numeric_columns)):
+        if column==numeric_columns[i]:
+            return i
+    
+
+def multivariate_feature_imputation(df,columns): #Fonction qui permet de remplacer les NaN dans les colonnes désirées à l'aide de la multivariate feature imputation
+    df2=pd.concat([df['Host_Response_Rate'],df['Latitude'],df['Longitude'],df['Accomodates'],df['Bathrooms'],df['Bedrooms'],df['Beds'],df['Guests_Included'],df['Min_Nights'],df['Reviews'],df['Overall_Rating'],df['Accuracy_Rating'], df['Cleanliness_Rating'], df['Checkin_Rating'], df['Communication_Rating'], df['Location_Rating'],df['Value_Rating'], df['Price']],join='outer',axis=1)                                                     
+    it_imp = IterativeImputer(sample_posterior=True, max_value=[np.inf,np.inf,np.inf,np.inf,np.inf,np.inf,np.inf,np.inf,np.inf,np.inf,1,1,1,1,1,1,1,np.inf])
+    transformed_df=it_imp.fit_transform(df2)
+    df_returned=df.copy()
+    for column in columns :
+        index=aux_index_column(column)
+        df_returned[column]=transformed_df[:,index]
+    return df_returned
+
+#df_Imputed= multivariate_feature_imputation(df,['Overall_Rating','Accuracy_Rating','Cleanliness_Rating','Checkin_Rating','Communication_Rating','Location_Rating','Value_Rating'])
