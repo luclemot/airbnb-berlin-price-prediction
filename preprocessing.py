@@ -9,7 +9,7 @@ from sklearn.impute import SimpleImputer
 
 # load dataset
 input_dir = os.path.join(os.getcwd(), "Data")
-data_path = os.path.join(input_dir, 'train_airbnb_berlin.csv')
+data_path = os.path.join(input_dir, 'train_airbnb_berlin_off.csv')
 df = pd.read_csv(data_path)
 
 # clean dataset
