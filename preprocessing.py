@@ -104,13 +104,13 @@ def drop_unnecessary_columns(df):
 # Transform categorical features using LabelEncoding method
 # categorical_features = ["neighbourhood", "Neighborhood_Group", "Property_Type", "Room_Type"]
 
-# def preprocessing_using_LabelEncoding(df, categorical_features = categorical_features):
-#     for feature in categorical_features:
-#         le = preprocessing.LabelEncoder()
-#         le.fit(df[feature])
-#         feature_new_name = 'Label_Encoder_' + str(feature)
-#         df[feature_new_name]= le.transform(df[feature])
-#         df = df.drop(feature, axis = 1)
-#     return df
+def preprocessing_using_LabelEncoding(df, categorical_features = categorical_features):
+    for feature in categorical_features:
+        le = preprocessing.LabelEncoder()
+        le.fit(df[feature])
+        feature_new_name = 'Label_Encoder_' + str(feature)
+        df[feature_new_name]= le.transform(df[feature])
+        df = df.drop(feature, axis = 1)
+    return df
 
 # df = preprocessing_using_LabelEncoding(df, categorical_features)

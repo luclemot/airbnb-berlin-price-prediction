@@ -6,30 +6,6 @@ from sklearn.preprocessing import StandardScaler, MinMaxScaler
 # Standard scaling is for features with gaussian-like distribution or lots of outliers
 # MinMax scaling is for features with different distribution and few outliers
 
-# df columns to standardize
-to_standardize = [
-    'Latitude', 'Longitude',
-    'Accomodates', 'Guests_Included',
-    'Bathrooms', 'Bedrooms', 'Beds',
-    'Min_Nights', 
-    'Reviews'
-]
-
-# df columns to minmax scale
-to_minmax = [
-    'Overall_Rating',
-    'Accuracy_Rating',
-    'Cleanliness_Rating',
-    'Checkin_Rating',
-    'Communication_Rating',
-    'Location_Rating',
-    'Value_Rating'
-]
-
-# Below limits are chosen to set all the non-categorical numerical features close to [0,1]
-borne_inf = 0
-borne_sup = 1
-
 
 def create_scaler(std=True, minmax=False, borne_inf=0, borne_sup=1):
     """Create sklearn scaler object, either Standard or Minmax scaler.
