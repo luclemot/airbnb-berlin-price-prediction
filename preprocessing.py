@@ -38,22 +38,22 @@ def clean_df(df):
 
 # Deal with missing values
 
-def handle_missing_values(df):
+def handle_missing_values(df): #Except ratings
     df.dropna(subset=['Price'],how='any',inplace=True)
     df.dropna(subset=['Listing_ID'],how='any',inplace=True)
     df['Accomodates'] = df['Accomodates'].fillna(2)
-    df['Accuracy_Rating'] = df['Accuracy_Rating'].fillna(df['Accuracy_Rating'].mean())
+    #df['Accuracy_Rating'] = df['Accuracy_Rating'].fillna(df['Accuracy_Rating'].mean())
     df['Bedrooms'] = df['Bedrooms'].fillna(1)
     df['Bathrooms'] = df['Bathrooms'].fillna(1)
     df['Beds'] = df['Beds'].fillna(1)
-    df['Checkin_Rating'] = df['Checkin_Rating'].fillna(df['Checkin_Rating'].mean())
-    df['Cleanliness_Rating'] = df['Cleanliness_Rating'].fillna(df['Cleanliness_Rating'].mean())
-    df['Communication_Rating'] = df['Communication_Rating'].fillna(df['Communication_Rating'].mean())
-    df['Location_Rating'] = df['Location_Rating'].fillna(df['Location_Rating'].mean())
+    #df['Checkin_Rating'] = df['Checkin_Rating'].fillna(df['Checkin_Rating'].mean())
+    #df['Cleanliness_Rating'] = df['Cleanliness_Rating'].fillna(df['Cleanliness_Rating'].mean())
+    #df['Communication_Rating'] = df['Communication_Rating'].fillna(df['Communication_Rating'].mean())
+    #df['Location_Rating'] = df['Location_Rating'].fillna(df['Location_Rating'].mean())
     df['Guests_Included'] = df['Guests_Included'].fillna(1)
     df['Min_Nights'] = df['Min_Nights'].fillna(1)
-    df['Overall_Rating'] = df['Overall_Rating'].fillna(df['Overall_Rating'].mean())
-    df['Value_Rating'] = df['Value_Rating'].fillna(df['Value_Rating'].mean())
+    #df['Overall_Rating'] = df['Overall_Rating'].fillna(df['Overall_Rating'].mean())
+    #df['Value_Rating'] = df['Value_Rating'].fillna(df['Value_Rating'].mean())
     df['Host_Response_Rate'] = df['Host_Response_Rate'].fillna(df['Host_Response_Rate'].mean())
     df['Host_Response_Time'] = df['Host_Response_Time'].fillna('a few days or more')
     df['Host_Since'] = df['Host_Since'].fillna(df['Host_Since'].value_counts().idxmax())
@@ -118,14 +118,14 @@ def preprocessing_using_LabelEncoding(df, categorical_features = categorical_fea
 from sklearn.experimental import enable_iterative_imputer  
 from sklearn.impute import IterativeImputer
 
-def aux_index_column(column): #Fonction auxiliaire à la multivariate imputation : Retourne l'index d'une colonne
+def aux_index_column(column): #Auxiliary function to the multivariate imputation : Return the index of a column
     numeric_columns=['Host_Response_Rate','Latitude','Longitude','Accomodates','Bathrooms','Bedrooms','Beds','Guests_Included','Min_Nights','Reviews','Overall_Rating','Accuracy_Rating','Cleanliness_Rating','Checkin_Rating','Communication_Rating','Location_Rating','Value_Rating','Price']
     for i in range(len(numeric_columns)):
         if column==numeric_columns[i]:
             return i
     
 
-def multivariate_feature_imputation(df,columns): #Fonction qui permet de remplacer les NaN dans les colonnes désirées à l'aide de la multivariate feature imputation
+def multivariate_feature_imputation(df,columns): #Function that allows to replace NaN in the desired columns using multivariate feature imputation
     df2=pd.concat([df['Host_Response_Rate'],df['Latitude'],df['Longitude'],df['Accomodates'],df['Bathrooms'],df['Bedrooms'],df['Beds'],df['Guests_Included'],df['Min_Nights'],df['Reviews'],df['Overall_Rating'],df['Accuracy_Rating'], df['Cleanliness_Rating'], df['Checkin_Rating'], df['Communication_Rating'], df['Location_Rating'],df['Value_Rating'], df['Price']],join='outer',axis=1)                                                     
     it_imp = IterativeImputer(sample_posterior=True, max_value=[np.inf,np.inf,np.inf,np.inf,np.inf,np.inf,np.inf,np.inf,np.inf,np.inf,1,1,1,1,1,1,1,np.inf])
     transformed_df=it_imp.fit_transform(df2)

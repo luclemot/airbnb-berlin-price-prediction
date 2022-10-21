@@ -7,7 +7,8 @@ from preprocessing import (
     drop_unnecessary_columns,
     preprocessing_categorical_features,
     preprocessing_using_OneHotEncoding,
-    preprocessing_using_LabelEncoding
+    preprocessing_using_LabelEncoding,
+    multivariate_feature_imputation
 )
 from scaling import apply_scaling
 
@@ -55,16 +56,19 @@ def load_preprocessed_data(cleaning:bool=True, missing_value:bool=True, cat_enco
         data = drop_unnecessary_columns(data)
         data = clean_df(data)
     
+    if scaling:
+        data = apply_scaling(data, to_standardize, to_minmax, borne_inf, borne_sup)
+
     if missing_value:
-        data = handle_missing_values(data)
-    
+        data = handle_missing_values(data) #Handles all missing values except ratings
+        data=multivariate_feature_imputation(data,['Overall_Rating','Accuracy_Rating','Cleanliness_Rating','Checkin_Rating','Communication_Rating','Location_Rating','Value_Rating'])
+        #The line above handles ratings
+        
     if cat_encoding:
         # TODO: add all the steps for categorical data handling here
         # la variable d'affectation doit toujours s'appeler data du coup
         None
     
-    if scaling:
-        data = apply_scaling(data, to_standardize, to_minmax, borne_inf, borne_sup)
     
     if pca:
         # TODO: apply the PCA here if needed
