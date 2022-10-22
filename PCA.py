@@ -16,8 +16,9 @@ target = 'Price'
 """
 Ce script est composé de deux fonctions. La première, airbnb_PCA, est faite pour déterminer le nombre optimal
 de PCA components. Pour que le code finisse de tourner, il faut fermer le graphe qui s'ouvrira sur votre IDE.
-A partir du graphe, choisir la valeur n (dès que la variance cumulative expliquée dépasse la barre des 95%.
-Appliquer la seconde fonction aribnb_PCA_n pour obtenir les coordonnées PCA."""
+A partir du graphe, choisir la valeur n (dès que la variance cumulative expliquée dépasse la barre des 95%).
+Appliquer la seconde fonction aribnb_PCA_n pour obtenir les coordonnées PCA.
+"""
 
 
 def airbnb_PCA(df, features, target):
