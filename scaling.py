@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler, MinMaxScaler
+from sklearn.compose import ColumnTransformer
 
 # Standard scaling is for features with gaussian-like distribution or lots of outliers
 # MinMax scaling is for features with different distribution and few outliers
