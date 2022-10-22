@@ -7,12 +7,16 @@ from sklearn import metrics
 import numpy as np
 
 from preprocessing_wrapper import load_preprocessed_data
+from PCA import airbnb_PCA_n
 
 data = load_preprocessed_data()
 data = data.drop(columns = ["Listing_ID", "Host_ID", "Postal_Code"])
 # Create X and Y, the target value from data
 X = data.drop(columns=['Price'])
 Y = data[['Price']]
+
+features = data.columns.drop("Price")
+target = 'Price'
 
 def stratify(X, Y, field):
     x_train, x_test,y_train,y_test = train_test_split(X,Y,test_size =0.2)
@@ -30,7 +34,13 @@ def stratify(X, Y, field):
     return(x_train_strat, x_test_strat, y_train_strat, y_test_strat)
 
 
-def Reg(stratify:bool=False, field:str=None):
+def Reg(stratify:bool=False, field:str=None, pca:bool=False):
+    data = load_preprocessed_data()
+    data = data.drop(columns = ["Listing_ID", "Host_ID", "Postal_Code"])
+    if pca:
+        data = airbnb_PCA_n(data, features, target, 80)
+    X = data.drop(columns=['Price'])
+    Y = data[['Price']]
     # Create the training and testing set
     x_train, x_test,y_train,y_test = train_test_split(X,Y,test_size =0.2)
     if stratify and field!=None:
@@ -48,4 +58,5 @@ def Reg(stratify:bool=False, field:str=None):
     print(rmse)
     return(rmse)
 
-Reg()
+print(Reg(pca=True))
+print(Reg())

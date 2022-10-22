@@ -6,18 +6,25 @@ from sklearn.neighbors import KNeighborsRegressor
 from sklearn import metrics
 import numpy as np
 
+from PCA import airbnb_PCA_n
 from preprocessing_wrapper import load_preprocessed_data
+
 """
 Ce script est composé de deux fonctions. La première, knn, est faite pour déterminer le k optimal.
 Pour que le code finisse de tourner, il faut fermer le graphe qui s'ouvrira sur votre IDE.
 A partir du graphe, choisir la valeur k (où la mse est minimale).
 Appliquer la seconde fonction knn_n pour obtenir la régression en k nearest neighbors.
 """
+
 data = load_preprocessed_data()
 data = data.drop(columns = ["Listing_ID", "Host_ID", "Postal_Code"])
+
 # Create X and Y, the target value from data
 X = data.drop(columns=['Price'])
 Y = data[['Price']]
+
+features = data.columns.drop("Price")
+target = 'Price'
 
 def knn():
     # Create the training and testing set
@@ -40,7 +47,13 @@ def knn():
 
 #knn()
 
-def knn_n(n):
+def knn_n(n, pca:bool=False):
+    data = load_preprocessed_data()
+    data = data.drop(columns = ["Listing_ID", "Host_ID", "Postal_Code"])
+    if pca:
+        data = airbnb_PCA_n(data, features, target, 80)
+    X = data.drop(columns=['Price'])
+    Y = data[['Price']]
     # Create the training and testing set
     x_train, x_test,y_train,y_test = train_test_split(X,Y,test_size =0.2)
     # Create regressor
@@ -56,4 +69,4 @@ def knn_n(n):
     print(rmse)
     return(rmse)
 
-knn_n(8)
+knn_n(8, True)

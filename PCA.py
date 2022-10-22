@@ -6,13 +6,6 @@ import matplotlib.pyplot as plt
 from preprocessing_wrapper import load_preprocessed_data
 import numpy as np
 
-data = load_preprocessed_data()
-data = data.drop(columns = ["Listing_ID", "Host_ID", "Postal_Code"])
-features = data.columns.drop('Price')
-target = 'Price'
-
-
-
 """
 Ce script est composé de deux fonctions. La première, airbnb_PCA, est faite pour déterminer le nombre optimal
 de PCA components. Pour que le code finisse de tourner, il faut fermer le graphe qui s'ouvrira sur votre IDE.
@@ -47,7 +40,7 @@ def airbnb_PCA(df, features, target):
     plt.ylabel('Cumulative sum of explained Variances')
     plt.show()
 
-airbnb_PCA(data, features, target)
+#airbnb_PCA(data, features, target)
 
 def airbnb_PCA_n(df, features, target,n):
     # Separating out the features
@@ -67,12 +60,10 @@ def airbnb_PCA_n(df, features, target,n):
     principalDf.index = df.index
     # Concatenante the PCA components values to the target balues
     finalDf = pd.concat([principalDf, pd.Series(df[target])], axis = 1)
-    print(finalDf.shape)
     # Create the explained variance
     explained_variance = pca.explained_variance_ratio_
-    print(explained_variance)
     # Return PCA fields and target variable.
     return(finalDf)
 
-test = airbnb_PCA_n(data, features, target, 80)
-print(test)
+#test = airbnb_PCA_n(data, features, target, 80)
+#print(test)
