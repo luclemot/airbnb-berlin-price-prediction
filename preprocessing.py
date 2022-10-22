@@ -82,29 +82,21 @@ def preprocessing_categorical_features(df):
 # print(df)
 
 # Transform categorical features using OneHotEncoding method
-categorical_features = ["neighbourhood", "Neighborhood_Group", "Property_Type", "Room_Type"]
 
-def preprocessing_using_OneHotEncoding(df, categorical_features = categorical_features):
+def preprocessing_using_OneHotEncoding(df):
+    categorical_features = ["neighbourhood", "Neighborhood_Group", "Property_Type", "Room_Type"]
     df_categorical_features = df[categorical_features]
     df_categorical_features = pd.get_dummies(df_categorical_features)
     df = pd.concat([df, df_categorical_features], axis=1)
-    return df
-
-# df = preprocessing_using_OneHotEncoding(df, categorical_features)
-# print(df.columns)
-
-def drop_unnecessary_columns(df):
     to_drop = ['Property_Type', 'Room_Type', 'Property_Type_nan', 'neighbourhood', 'Neighborhood_Group']
     df = df.drop(to_drop, axis = 1)
     return df
 
-# df = drop_unnecessary_columns(df)
-# print(len(df.columns))
-
 # Transform categorical features using LabelEncoding method
 # categorical_features = ["neighbourhood", "Neighborhood_Group", "Property_Type", "Room_Type"]
 
-def preprocessing_using_LabelEncoding(df, categorical_features = categorical_features):
+def preprocessing_using_LabelEncoding(df):
+    categorical_features = ["neighbourhood", "Neighborhood_Group", "Property_Type", "Room_Type"]
     for feature in categorical_features:
         le = preprocessing.LabelEncoder()
         le.fit(df[feature])

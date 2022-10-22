@@ -4,7 +4,6 @@ import pandas as pd
 from preprocessing import (
     clean_df,
     handle_missing_values,
-    drop_unnecessary_columns,
     preprocessing_categorical_features,
     preprocessing_using_OneHotEncoding,
     preprocessing_using_LabelEncoding,
@@ -39,7 +38,7 @@ borne_sup = 1
 
 
 def load_preprocessed_data(cleaning:bool=True, missing_value:bool=True, cat_encoding:bool=True,
-                           scaling:bool=True, pca:bool=True):
+                           scaling:bool=True, pca:bool=True, OneHotEncoding:bool = True, LabelEncoding:bool = False):
     """Global wrapper executing all the preprocessing code to apply to the loaded dataset.
     
     :param cleaning: bool - if True, execute the preprocessing code dealing wtth dataframe cleaning
@@ -53,7 +52,6 @@ def load_preprocessed_data(cleaning:bool=True, missing_value:bool=True, cat_enco
     data = pd.read_csv(data_path)
     
     if cleaning:
-        data = drop_unnecessary_columns(data)
         data = clean_df(data)
     
     if scaling:
@@ -65,8 +63,11 @@ def load_preprocessed_data(cleaning:bool=True, missing_value:bool=True, cat_enco
         #The line above handles ratings
         
     if cat_encoding:
-        # TODO: add all the steps for categorical data handling here
-        # la variable d'affectation doit toujours s'appeler data du coup
+        data = preprocessing_categorical_features(data)
+        if OneHotEncoding:
+            data = preprocessing_using_OneHotEncoding(data)
+        elif LabelEncoding:
+            data = preprocessing_using_LabelEncoding(data)
         None
     
     
