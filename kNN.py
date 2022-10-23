@@ -2,15 +2,23 @@
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from matplotlib import pyplot as plt
-from sklearn.linear_model import LinearRegression
+from sklearn.neighbors import KNeighborsRegressor
 from sklearn import metrics
 import numpy as np
 
-from preprocessing_wrapper import load_preprocessed_data
 from PCA import airbnb_PCA_n
+from preprocessing_wrapper import load_preprocessed_data
+
+"""
+Ce script est composé de deux fonctions. La première, knn, est faite pour déterminer le k optimal.
+Pour que le code finisse de tourner, il faut fermer le graphe qui s'ouvrira sur votre IDE.
+A partir du graphe, choisir la valeur k (où la mse est minimale).
+Appliquer la seconde fonction knn_n pour obtenir la régression en k nearest neighbors.
+"""
 
 data = load_preprocessed_data()
 data = data.drop(columns = ["Listing_ID", "Host_ID", "Postal_Code"])
+
 # Create X and Y, the target value from data
 X = data.drop(columns=['Price'])
 Y = data[['Price']]
@@ -18,23 +26,28 @@ Y = data[['Price']]
 features = data.columns.drop("Price")
 target = 'Price'
 
-def stratify(X, Y, field):
+def knn():
+    # Create the training and testing set
     x_train, x_test,y_train,y_test = train_test_split(X,Y,test_size =0.2)
-    x_train_strat, x_test_strat, y_train_strat, y_test_strat = train_test_split(X, Y, stratify = X[field], test_size = 0.2)
-    def accomodation_proportions(data, field):
-        return data[field].value_counts() / len(data)
-    compare_props = pd.DataFrame({
-    "Input_dataset": accomodation_proportions(X, 'Accomodates'),
-    "Test_set": accomodation_proportions(x_test, 'Accomodates'),
-    "Strat_set": accomodation_proportions(x_test_strat, 'Accomodates')
-    }).sort_index()
-    compare_props["Test set. %error"] = 100 * compare_props["Test_set"] / compare_props["Input_dataset"] - 100
-    compare_props["Strat test set. %error"] = 100 * compare_props["Strat_set"] / compare_props["Input_dataset"] - 100
-    print(compare_props)
-    return(x_train_strat, x_test_strat, y_train_strat, y_test_strat)
+    error = []
+    for i in range(1, 40):
+        knn = KNeighborsRegressor(n_neighbors=i)
+        knn.fit(x_train, y_train)
+        pred_i = knn.predict(x_test)
+        mse = metrics.mean_squared_error(y_test, pred_i, squared = False)
+        error.append(mse)
+    plt.figure(figsize=(12, 6))
+    plt.plot(range(1, 40), error, color='red', 
+            linestyle='dashed', marker='o',
+            markerfacecolor='blue', markersize=10)
+    plt.title('K Value kMSE')
+    plt.xlabel('K Value')
+    plt.ylabel('Root Mean Squared Error')
+    plt.show()
 
+#knn()
 
-def Reg(stratify:bool=False, field:str=None, pca:bool=False):
+def knn_n(n, pca:bool=False):
     data = load_preprocessed_data()
     data = data.drop(columns = ["Listing_ID", "Host_ID", "Postal_Code"])
     if pca:
@@ -43,10 +56,8 @@ def Reg(stratify:bool=False, field:str=None, pca:bool=False):
     Y = data[['Price']]
     # Create the training and testing set
     x_train, x_test,y_train,y_test = train_test_split(X,Y,test_size =0.2)
-    if stratify and field!=None:
-        x_train, x_test, y_train, y_test = stratify(X,Y,field)
     # Create regressor
-    clf = LinearRegression()
+    clf = KNeighborsRegressor(n)
     # Fit on the training set
     clf.fit(x_train, y_train)
     # Create predictions
@@ -58,5 +69,4 @@ def Reg(stratify:bool=False, field:str=None, pca:bool=False):
     print(rmse)
     return(rmse)
 
-print(Reg(pca=True))
-print(Reg())
+knn_n(8, True)
