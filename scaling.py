@@ -58,6 +58,7 @@ def scale_numerical_dataframe(df, scaler):
     :param df: pandas.DataFrame - dataframe with ONLY numerical columns
     :param scaler: sklearn.preprocessing.Scaler - either StandardScaler or MinMaxScaler
     """
+    pd.options.mode.chained_assignment = None  # default='warn'
     for column in df.columns:
         col = df[column]
         df[column] = scaler.fit_transform(np.array(col).reshape(-1,1))
