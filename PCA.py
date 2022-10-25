@@ -40,30 +40,28 @@ def airbnb_PCA(df, features, target):
     plt.ylabel('Cumulative sum of explained Variances')
     plt.show()
 
+data = load_preprocessed_data()
+features = data.columns.drop('Price')
+target = 'Price'
 #airbnb_PCA(data, features, target)
 
-def airbnb_PCA_n(df, features, target,n):
-    # Separating out the features
-    x = df.loc[:, features].values
-    # Separating out the target
-    y = df.loc[:,target].values
+def airbnb_PCA_n(x_train, x_test ,n):
     # Standardizing the features
-    x = StandardScaler().fit_transform(x)
+    scale = StandardScaler()
+    x_train = scale.fit_transform(x_train)
+    x_test = scale.transform(x_test)
     # Create the PCA regressor with the optimal number of components n
     pca = PCA(n)
-    principalComponents = pca.fit_transform(x)
+    principalComponents = pca.fit_transform(x_train)
     # Create the new dataframe
     principalDf = pd.DataFrame(data = principalComponents
                                ,columns = ['PC'+str(i) for i in range(1,n+1)]
                             )
-    # Ensure that the PCA values will merge to the target values      
-    principalDf.index = df.index
-    # Concatenante the PCA components values to the target balues
-    finalDf = pd.concat([principalDf, pd.Series(df[target])], axis = 1)
+    x_test = pca.transform(x_test)
     # Create the explained variance
     explained_variance = pca.explained_variance_ratio_
     # Return PCA fields and target variable.
-    return(finalDf)
+    return(principalComponents, x_test)
 
 #test = airbnb_PCA_n(data, features, target, 80)
 #print(test)

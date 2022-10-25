@@ -38,7 +38,7 @@ borne_sup = 1
 
 
 def load_preprocessed_data(cleaning:bool=True, missing_value:bool=True, cat_encoding:bool=True,
-                           scaling:bool=True, pca:bool=True, OneHotEncoding:bool = True, LabelEncoding:bool = False):
+                           scaling:bool=True, pca:bool=False, OneHotEncoding:bool = True, LabelEncoding:bool = False):
     """Global wrapper executing all the preprocessing code to apply to the loaded dataset.
     
     :param cleaning: bool - if True, execute the preprocessing code dealing wtth dataframe cleaning
@@ -72,7 +72,6 @@ def load_preprocessed_data(cleaning:bool=True, missing_value:bool=True, cat_enco
     
     
     if pca:
-        # TODO: apply the PCA here if needed
         None
     
     return data

@@ -50,12 +50,12 @@ def knn():
 def knn_n(n, pca:bool=False):
     data = load_preprocessed_data()
     data = data.drop(columns = ["Listing_ID", "Host_ID", "Postal_Code"])
-    if pca:
-        data = airbnb_PCA_n(data, features, target, 80)
     X = data.drop(columns=['Price'])
     Y = data[['Price']]
     # Create the training and testing set
     x_train, x_test,y_train,y_test = train_test_split(X,Y,test_size =0.2)
+    if pca:
+        x_train, x_test = airbnb_PCA_n(x_train, x_test, 80)
     # Create regressor
     clf = KNeighborsRegressor(n)
     # Fit on the training set

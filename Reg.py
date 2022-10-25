@@ -37,14 +37,14 @@ def stratify(X, Y, field):
 def Reg(stratify:bool=False, field:str=None, pca:bool=False):
     data = load_preprocessed_data()
     data = data.drop(columns = ["Listing_ID", "Host_ID", "Postal_Code"])
-    if pca:
-        data = airbnb_PCA_n(data, features, target, 80)
     X = data.drop(columns=['Price'])
     Y = data[['Price']]
     # Create the training and testing set
-    x_train, x_test,y_train,y_test = train_test_split(X,Y,test_size =0.2)
+    x_train, x_test,y_train,y_test = train_test_split(X,Y,test_size =0.2, random_state = None)
     if stratify and field!=None:
         x_train, x_test, y_train, y_test = stratify(X,Y,field)
+    if pca:
+        x_train, x_test = airbnb_PCA_n(x_train, x_test, 80)
     # Create regressor
     clf = LinearRegression()
     # Fit on the training set
@@ -55,8 +55,8 @@ def Reg(stratify:bool=False, field:str=None, pca:bool=False):
     acc = clf.score(x_test,y_test)
     print(acc)
     rmse = metrics.mean_squared_error(y_test, pred, squared = False)
-    print(rmse)
     return(rmse)
 
 print(Reg(pca=True))
-print(Reg())
+
+print(Reg(pca=False))
