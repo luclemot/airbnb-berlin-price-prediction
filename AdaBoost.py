@@ -4,7 +4,8 @@ from matplotlib import pyplot as plt
 from sklearn import metrics
 import numpy as np
 from PCA import airbnb_PCA_n
-from preprocessing_wrapper import (load_preprocessed_data, cross_validation)
+from preprocessing_wrapper import load_preprocessed_data
+from Cross_validation import cross_validation
 from sklearn.ensemble import AdaBoostRegressor
 from sklearn.model_selection import GridSearchCV
 
