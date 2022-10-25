@@ -8,6 +8,7 @@ import numpy as np
 
 from preprocessing_wrapper import load_preprocessed_data
 from PCA import airbnb_PCA_n
+from Cross_validation import cross_validation
 
 data = load_preprocessed_data()
 data = data.drop(columns = ["Listing_ID", "Host_ID", "Postal_Code"])
@@ -60,3 +61,5 @@ def Reg(stratify:bool=False, field:str=None, pca:bool=False):
 print(Reg(pca=True))
 
 print(Reg(pca=False))
+
+print(cross_validation(LinearRegression(), 5, X, Y, pca = True))

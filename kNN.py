@@ -8,6 +8,7 @@ import numpy as np
 
 from PCA import airbnb_PCA_n
 from preprocessing_wrapper import load_preprocessed_data
+from Cross_validation import cross_validation
 
 """
 Ce script est composé de deux fonctions. La première, knn, est faite pour déterminer le k optimal.
@@ -69,4 +70,6 @@ def knn_n(n, pca:bool=False):
     print(rmse)
     return(rmse)
 
-knn_n(8, True)
+print(knn_n(8, True))
+
+print(cross_validation(KNeighborsRegressor(8), 5, X, Y, pca = True))
