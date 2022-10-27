@@ -51,7 +51,7 @@ def load_preprocessed_data(cleaning:bool=True, missing_value:bool=True, cat_enco
     :param pca: bool - if True, execute the preprocessing code dealing with PCA
     """
     input_dir = os.path.join(os.getcwd(), "Data")
-    data_path = os.path.join(input_dir, 'train_airbnb_berlin_off.csv')
+    data_path = os.path.join(input_dir, 'Stratified_train_set.csv')
     data = pd.read_csv(data_path)
     
     if cleaning:
