@@ -14,7 +14,7 @@ df = pd.read_csv(data_path)
 
 # clean dataset
 def clean_df(df):
-    to_drop = ['Listing Name', 'Host Name', 'City', 'Country Code', 'Country', 'Square Feet']
+    to_drop = ['Listing Name', 'Host Name', 'City', 'Country Code', 'Country', 'Square Feet', 'Host_Response_Rate', 'Host_Response_Time']
     df = df.drop(to_drop, axis = 1)
     df.columns = df.columns.str.replace(' ','_')
     df = df.replace('*', np.nan)
@@ -38,24 +38,24 @@ def clean_df(df):
 
 # Deal with missing values
 
-def handle_missing_values(df):
+def handle_missing_values(df): #Except ratings
     df.dropna(subset=['Price'],how='any',inplace=True)
     df.dropna(subset=['Listing_ID'],how='any',inplace=True)
     df['Accomodates'] = df['Accomodates'].fillna(2)
-    df['Accuracy_Rating'] = df['Accuracy_Rating'].fillna(df['Accuracy_Rating'].mean())
+    #df['Accuracy_Rating'] = df['Accuracy_Rating'].fillna(df['Accuracy_Rating'].mean())
     df['Bedrooms'] = df['Bedrooms'].fillna(1)
     df['Bathrooms'] = df['Bathrooms'].fillna(1)
     df['Beds'] = df['Beds'].fillna(1)
-    df['Checkin_Rating'] = df['Checkin_Rating'].fillna(df['Checkin_Rating'].mean())
-    df['Cleanliness_Rating'] = df['Cleanliness_Rating'].fillna(df['Cleanliness_Rating'].mean())
-    df['Communication_Rating'] = df['Communication_Rating'].fillna(df['Communication_Rating'].mean())
-    df['Location_Rating'] = df['Location_Rating'].fillna(df['Location_Rating'].mean())
+    #df['Checkin_Rating'] = df['Checkin_Rating'].fillna(df['Checkin_Rating'].mean())
+    #df['Cleanliness_Rating'] = df['Cleanliness_Rating'].fillna(df['Cleanliness_Rating'].mean())
+    #df['Communication_Rating'] = df['Communication_Rating'].fillna(df['Communication_Rating'].mean())
+    #df['Location_Rating'] = df['Location_Rating'].fillna(df['Location_Rating'].mean())
     df['Guests_Included'] = df['Guests_Included'].fillna(1)
     df['Min_Nights'] = df['Min_Nights'].fillna(1)
-    df['Overall_Rating'] = df['Overall_Rating'].fillna(df['Overall_Rating'].mean())
-    df['Value_Rating'] = df['Value_Rating'].fillna(df['Value_Rating'].mean())
-    df['Host_Response_Rate'] = df['Host_Response_Rate'].fillna(df['Host_Response_Rate'].mean())
-    df['Host_Response_Time'] = df['Host_Response_Time'].fillna('a few days or more')
+    #df['Overall_Rating'] = df['Overall_Rating'].fillna(df['Overall_Rating'].mean())
+    #df['Value_Rating'] = df['Value_Rating'].fillna(df['Value_Rating'].mean())
+    #df['Host_Response_Rate'] = df['Host_Response_Rate'].fillna(df['Host_Response_Rate'].mean())
+    #df['Host_Response_Time'] = df['Host_Response_Time'].fillna('a few days or more')
     df['Host_Since'] = df['Host_Since'].fillna(df['Host_Since'].value_counts().idxmax())
     df['Last_Review'] = df['Last_Review'].fillna(df['Last_Review'].value_counts().idxmax())
     df['First_Review'] = df['First_Review'].fillna(df['First_Review'].value_counts().idxmax())
@@ -82,35 +82,49 @@ def preprocessing_categorical_features(df):
 # print(df)
 
 # Transform categorical features using OneHotEncoding method
-categorical_features = ["neighbourhood", "Neighborhood_Group", "Property_Type", "Room_Type"]
 
-def preprocessing_using_OneHotEncoding(df, categorical_features = categorical_features):
+def preprocessing_using_OneHotEncoding(df):
+    categorical_features = ["neighbourhood", "Neighborhood_Group", "Property_Type", "Room_Type"]
     df_categorical_features = df[categorical_features]
     df_categorical_features = pd.get_dummies(df_categorical_features)
     df = pd.concat([df, df_categorical_features], axis=1)
-    return df
-
-# df = preprocessing_using_OneHotEncoding(df, categorical_features)
-# print(df.columns)
-
-def drop_unnecessary_columns(df):
     to_drop = ['Property_Type', 'Room_Type', 'Property_Type_nan', 'neighbourhood', 'Neighborhood_Group']
     df = df.drop(to_drop, axis = 1)
     return df
 
-# df = drop_unnecessary_columns(df)
-# print(len(df.columns))
-
 # Transform categorical features using LabelEncoding method
 # categorical_features = ["neighbourhood", "Neighborhood_Group", "Property_Type", "Room_Type"]
 
-# def preprocessing_using_LabelEncoding(df, categorical_features = categorical_features):
-#     for feature in categorical_features:
-#         le = preprocessing.LabelEncoder()
-#         le.fit(df[feature])
-#         feature_new_name = 'Label_Encoder_' + str(feature)
-#         df[feature_new_name]= le.transform(df[feature])
-#         df = df.drop(feature, axis = 1)
-#     return df
+def preprocessing_using_LabelEncoding(df):
+    categorical_features = ["neighbourhood", "Neighborhood_Group", "Property_Type", "Room_Type"]
+    for feature in categorical_features:
+        le = preprocessing.LabelEncoder()
+        le.fit(df[feature])
+        feature_new_name = 'Label_Encoder_' + str(feature)
+        df[feature_new_name]= le.transform(df[feature])
+        df = df.drop(feature, axis = 1)
+    return df
 
 # df = preprocessing_using_LabelEncoding(df, categorical_features)
+
+from sklearn.experimental import enable_iterative_imputer  
+from sklearn.impute import IterativeImputer
+
+def aux_index_column(column): #Auxiliary function to the multivariate imputation : Return the index of a column
+    numeric_columns=['Host_Response_Rate','Latitude','Longitude','Accomodates','Bathrooms','Bedrooms','Beds','Guests_Included','Min_Nights','Reviews','Overall_Rating','Accuracy_Rating','Cleanliness_Rating','Checkin_Rating','Communication_Rating','Location_Rating','Value_Rating','Price']
+    for i in range(len(numeric_columns)):
+        if column==numeric_columns[i]:
+            return i
+    
+
+def multivariate_feature_imputation(df,columns): #Function that allows to replace NaN in the desired columns using multivariate feature imputation
+    df2=pd.concat([df['Host_Response_Rate'],df['Latitude'],df['Longitude'],df['Accomodates'],df['Bathrooms'],df['Bedrooms'],df['Beds'],df['Guests_Included'],df['Min_Nights'],df['Reviews'],df['Overall_Rating'],df['Accuracy_Rating'], df['Cleanliness_Rating'], df['Checkin_Rating'], df['Communication_Rating'], df['Location_Rating'],df['Value_Rating'], df['Price']],join='outer',axis=1)                                                     
+    it_imp = IterativeImputer(sample_posterior=True, max_value=[np.inf,np.inf,np.inf,np.inf,np.inf,np.inf,np.inf,np.inf,np.inf,np.inf,1,1,1,1,1,1,1,np.inf])
+    transformed_df=it_imp.fit_transform(df2)
+    df_returned=df.copy()
+    for column in columns :
+        index=aux_index_column(column)
+        df_returned[column]=transformed_df[:,index]
+    return df_returned
+
+#df_Imputed= multivariate_feature_imputation(df,['Overall_Rating','Accuracy_Rating','Cleanliness_Rating','Checkin_Rating','Communication_Rating','Location_Rating','Value_Rating'])
