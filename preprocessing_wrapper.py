@@ -18,7 +18,8 @@ to_standardize = [
     'Accomodates', 'Guests_Included',
     'Bathrooms', 'Bedrooms', 'Beds',
     'Min_Nights', 
-    'Reviews'
+    'Reviews', 
+    'Host_Response_Rate',
 ]
 
 # df columns to minmax scale
@@ -33,7 +34,7 @@ to_minmax = [
 ]
 
 # Below limits are chosen to set all the non-categorical numerical features close to [0,1]
-borne_inf = 0
+borne_inf = -1
 borne_sup = 1
 
 
