@@ -47,12 +47,12 @@ def Random_Forest(X_train, X_test, y_train, y_test, max_depth, max_features, n_e
     return regressor
 
 
-param_grid = {
-        'max_depth': [44, 45, 46, 47, 48, 49],
-        'n_estimators': [850, 875, 900, 925]
-    }
+# param_grid = {
+#         'max_depth': [44, 45, 46, 47, 48, 49],
+#         'n_estimators': [850, 875, 900, 925]
+#     }
 
-X_train, X_test, y_train, y_test = get_data_split() 
+#X_train, X_test, y_train, y_test = get_data_split() 
 
 #print(Grid_search(train, param_grid))
 #print(Random_Forest(X_train, X_test, y_train, y_test, max_depth = 49 , max_features = 'sqrt', n_estimators = 900))
