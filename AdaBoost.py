@@ -38,7 +38,7 @@ def searchAdaBoost_parameters(pca:bool=True): #the execution can take 20 minutes
     print('rmse :',rmse)
     
 def adaBoost(nb_estimators,learn_rate, pca:bool=True):
-    data = load_preprocessed_data()
+    data = load_preprocessed_data(False,False,False,False,False,False,False)
     data = data.drop(columns = ["Listing_ID", "Host_ID", "Postal_Code"])
     X = data.drop(columns=['Price'])
     Y = data[['Price']]
