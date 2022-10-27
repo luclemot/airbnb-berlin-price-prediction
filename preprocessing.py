@@ -14,7 +14,7 @@ df = pd.read_csv(data_path)
 
 # clean dataset
 def clean_df(df):
-    to_drop = ['Listing Name', 'Host Name', 'City', 'Country Code', 'Country', 'Square Feet', 'Host_Response_Rate', 'Host_Response_Time']
+    to_drop = ['Listing Name', 'Host Name', 'City', 'Country Code', 'Country', 'Square Feet']
     df = df.drop(to_drop, axis = 1)
     df.columns = df.columns.str.replace(' ','_')
     df = df.replace('*', np.nan)
@@ -54,8 +54,8 @@ def handle_missing_values(df): #Except ratings
     df['Min_Nights'] = df['Min_Nights'].fillna(1)
     #df['Overall_Rating'] = df['Overall_Rating'].fillna(df['Overall_Rating'].mean())
     #df['Value_Rating'] = df['Value_Rating'].fillna(df['Value_Rating'].mean())
-    #df['Host_Response_Rate'] = df['Host_Response_Rate'].fillna(df['Host_Response_Rate'].mean())
-    #df['Host_Response_Time'] = df['Host_Response_Time'].fillna('a few days or more')
+    df['Host_Response_Rate'] = df['Host_Response_Rate'].fillna(df['Host_Response_Rate'].mean())
+    df['Host_Response_Time'] = df['Host_Response_Time'].fillna('a few days or more')
     df['Host_Since'] = df['Host_Since'].fillna(df['Host_Since'].value_counts().idxmax())
     df['Last_Review'] = df['Last_Review'].fillna(df['Last_Review'].value_counts().idxmax())
     df['First_Review'] = df['First_Review'].fillna(df['First_Review'].value_counts().idxmax())
