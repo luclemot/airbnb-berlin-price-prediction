@@ -1,15 +1,9 @@
-from sklearn import tree
-from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error
 from sklearn.metrics import r2_score
 from sklearn.model_selection import GridSearchCV
 from sklearn.ensemble import RandomForestRegressor
 import numpy as np
 import pandas as pd
-from preprocessing_wrapper import (
-    load_preprocessed_data
-)
-from PCA import (airbnb_PCA_n)
 
 def get_data_split():
     """returns the correct X_train, X_test, y_train, y_test to compute your models"""
