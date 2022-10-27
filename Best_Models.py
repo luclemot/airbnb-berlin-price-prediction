@@ -30,4 +30,6 @@ y_pred = regressor.predict(X_test)
 RMSE = np.sqrt(mean_squared_error(y_test, y_pred))
 R2 = r2_score(y_test,y_pred)
 
-print(RMSE, R2)
+print('Pour le Random Forest on obtient')
+print('RMSE :', RMSE)
+print('RMSE :', R2)
