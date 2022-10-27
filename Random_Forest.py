@@ -41,10 +41,10 @@ def Random_Forest(X_train, X_test, y_train, y_test, max_depth, max_features, n_e
                 max_features = max_features,
                 n_estimators = n_estimators)
     regressor = regressor.fit(X_train, y_train)
-    y_pred = regressor.predict(X_test)
-    RMSE = np.sqrt(mean_squared_error(y_test, y_pred))
-    R2 = r2_score(y_test,y_pred)
-    return RMSE, R2
+    #y_pred = regressor.predict(X_test)
+    #RMSE = np.sqrt(mean_squared_error(y_test, y_pred))
+    #R2 = r2_score(y_test,y_pred)
+    return regressor
 
 
 param_grid = {
@@ -55,4 +55,4 @@ param_grid = {
 X_train, X_test, y_train, y_test = get_data_split() 
 
 #print(Grid_search(train, param_grid))
-print(Random_Forest(X_train, X_test, y_train, y_test, max_depth = 49 , max_features = 'sqrt', n_estimators = 900))
+#print(Random_Forest(X_train, X_test, y_train, y_test, max_depth = 49 , max_features = 'sqrt', n_estimators = 900))
