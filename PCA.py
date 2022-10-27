@@ -40,9 +40,9 @@ def airbnb_PCA(df, features, target):
     plt.ylabel('Cumulative sum of explained Variances')
     plt.show()
 
-data = load_preprocessed_data()
-features = data.columns.drop('Price')
-target = 'Price'
+#data = load_preprocessed_data()
+#features = data.columns.drop('Price')
+#target = 'Price'
 #airbnb_PCA(data, features, target)
 
 def airbnb_PCA_n(x_train, x_test ,n):
