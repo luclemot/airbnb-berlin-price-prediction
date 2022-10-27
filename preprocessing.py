@@ -4,7 +4,7 @@ import datetime
 import numpy as np
 import os
 from sklearn import preprocessing
-from sklearn.experimental import enable_iterative_imputer
+from sklearn.impute import SimpleImputer
 # load dataset
 input_dir = os.path.join(os.getcwd(), "Data")
 data_path = os.path.join(input_dir, 'train_airbnb_berlin_off.csv')
