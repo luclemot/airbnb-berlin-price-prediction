@@ -1,8 +1,30 @@
-import xgboost
+import xgboost as xgb
 
 
-def xgboost(X_train, Y_train, **kwargs):
-    xgb_model = xgb.XGBRegressor(**kwargs).fit(x_train, y_train)
+def xgboost(
+    X_train,
+    Y_train, 
+    objective,
+    random_state,
+    max_depth,
+    subsample,
+    colsample_bytree,
+    learning_rate,
+    gamma,
+    eta,
+    n_estimators
+):
+    xgb_model = xgb.XGBRegressor(
+        objective=objective,
+        random_state=random_state,
+        max_depth=max_depth,
+        subsample=subsample,
+        colsample_bytree=colsample_bytree,
+        learning_rate=learning_rate,
+        gamma=gamma,
+        eta=eta,
+        n_estimators=n_estimators
+    ).fit(X_train, Y_train)
     return xgb_model
 
 

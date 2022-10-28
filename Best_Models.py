@@ -3,8 +3,8 @@ import numpy as np
 from sklearn.metrics import mean_squared_error
 from sklearn.metrics import r2_score
 
-from Random_Forest import Random_Forest
-from xgBoost import xgboost
+from Models.Random_Forest import Random_Forest
+from Models.xgBoost import xgboost
 
 
 def get_data_split():
@@ -31,6 +31,8 @@ R2_rf = r2_score(y_test,y_pred_rf)
 
         
 regressor_xgb = xgboost(
+    X_train, 
+    y_train,
     objective="reg:squarederror",
     random_state=42,
     max_depth=5,
