@@ -2,7 +2,7 @@
 
 ## Objectif du projet :
 
-Le marché des locations court-terme est en forte expansion dans les villes touristiques, et à Berlin y compris. L'objectif de cette étude est d'estimer notre capacité à prédire le prix d'une location en fonction des différentes caractéristiques d'une annonce sur la plateforme Airbnb. Ce problème est tiré d'un challenge disponible à [ce lien](https://dphi.tech/challenges/data-sprint-47-airbnb-berlin-price-prediction/160/data). Le git du projet est disponible [ici](https://gitlab-student.centralesupelec.fr/2019clemotl/airbnb-berlin-price-prediction-ml-2223).
+Le marché des locations court-terme est en forte expansion dans les villes touristiques, et à Berlin y compris. L'objectif de cette étude est d'estimer notre capacité à prédire le prix d'une location en fonction des différentes caractéristiques d'une annonce sur la plateforme Airbnb. Ce problème est tiré d'un challenge disponible à [ce lien](https://dphi.tech/challenges/data-sprint-47-airbnb-berlin-price-prediction/160/data).
 
 
 ## Présentation de l'approche :
